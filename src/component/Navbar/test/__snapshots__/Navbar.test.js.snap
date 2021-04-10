@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing Navbar matches snapshot 1`] = `
+<nav
+  className="NavbarItems"
+  data-testid="navbar"
+>
+  <h1
+    className="navbar-logo"
+  >
+    Stainley Lebron 
+    <i
+      className="fab fa-react"
+    />
+  </h1>
+  <div
+    className="menu-icon"
+    onClick={[Function]}
+  >
+    <i
+      className="fas fa-bars"
+    />
+  </div>
+  <ul
+    className="nav-menu"
+  >
+    <li>
+      <a
+        className="nav-links"
+        href="/"
+        onClick={[Function]}
+      >
+        Home
+      </a>
+    </li>
+    <li>
+      <a
+        className="nav-links"
+        href="/about"
+        onClick={[Function]}
+      >
+        About Me
+      </a>
+    </li>
+    <li>
+      <a
+        className="nav-links"
+        href="/portfolio"
+        onClick={[Function]}
+      >
+        Portfolio
+      </a>
+    </li>
+    <li>
+      <a
+        className="nav-links"
+        href="/contact"
+        onClick={[Function]}
+      >
+        Contact Me
+      </a>
+    </li>
+    <li>
+      <a
+        className="nav-links-mobile"
+        href="/"
+        onClick={[Function]}
+      >
+        Sign Up
+      </a>
+    </li>
+  </ul>
+  <button
+    className="btn btn-primary btn--medium"
+  >
+    Sign Up
+  </button>
+</nav>
+`;

@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: portafolio-web
-          image: stainley/img-portfolio
+          image: stainley/img-portfolio:0.0.3
           ports:
             - containerPort: 80
       restartPolicy: Always
