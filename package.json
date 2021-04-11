@@ -16,7 +16,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "react-scripts test --coverage --updateSnapshot",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -38,6 +38,7 @@
     ]
   },
   "devDependencies": {
+    "enzyme": "^3.11.0",
     "jest": "^26.6.0",
     "jest-dom": "^4.0.0"
   }

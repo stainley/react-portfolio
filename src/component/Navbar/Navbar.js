@@ -1,37 +1,36 @@
-import React, {Component} from "react";
+import React, {useState} from "react";
 import {MenuItems} from './MenuItems';
 import {Link} from 'react-router-dom';
 import './Navbar.css';
 import {Button} from "./Button";
 
-export default class Navbar extends Component {
+function Navbar() {
 
-    state = {clicked: false}
+    const [click, setClick] = useState(false)
 
-    handleClick = () => {
-        this.setState({clicked: !this.state.clicked})
-    }
+    const handleClick = () => setClick(!click);
 
-    render() {
-        return (
-            <nav data-testid="navbar" className="NavbarItems">
-                <h1 className="navbar-logo">Stainley Lebron <i className="fab fa-react"/></h1>
-                <div className="menu-icon" onClick={this.handleClick}>
-                    <i className={this.state.clicked ? 'fas fa-times' : 'fas fa-bars'}/>
-                </div>
-                <ul className={this.state.clicked ? 'nav-menu active' : 'nav-menu'}>
-                    {MenuItems.map((item, index) => {
-                        return (
-                            <li key={index}>
-                                <Link to={item.url} className={item.cName}>
-                                    {item.title}
-                                </Link>
-                            </li>
-                        );
-                    })}
-                </ul>
-                <Button>Sign Up</Button>
-            </nav>
-        );
-    }
+    return (
+        <nav data-testid="navbar-test-id" className="NavbarItems">
+            <h1 className="navbar-logo">Stainley Lebron <i className="fab fa-react"/></h1>
+            <div className="menu-icon" onClick={handleClick}>
+                <i className={click ? 'fas fa-times' : 'fas fa-bars'}/>
+            </div>
+            <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+                {MenuItems.map((item, index) => {
+                    return (
+                        <li key={index}>
+                            <Link to={item.url} className={item.cName}>
+                                {item.title}
+                            </Link>
+                        </li>
+                    );
+                })}
+            </ul>
+            <Button>Sign Up</Button>
+        </nav>
+    );
+
 }
+
+export default Navbar;

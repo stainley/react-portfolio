@@ -1,12 +1,13 @@
 import React from 'react';
 import './About.css';
 
-const About = () => {
+const About = ({headline, description, lightTextDesc, photo}) => {
+//const About = (props) => {
     return (
         <div data-testid="id-name" className="about-ui" style={{ height: '85%' }}>
             <span>
-                I'm <b>Stainley</b> a <b><i>Software Engineer</i></b> with a Bs. in Computer Science.
-                Over a decade building solutions.
+                <h1 className="heading">{headline}</h1>
+                <p className={headline? '' : ''}>{description}</p>
             </span>
         </div>
 );
