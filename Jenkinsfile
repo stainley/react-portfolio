@@ -27,7 +27,7 @@ pipeline {
             parallel {
                 stage('Run Test') {
                     steps {
-                        sh 'npm run test'
+                        sh 'npm run test --coverage'
                     }
                 }
                 stage('Create Build') {
