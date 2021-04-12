@@ -13,7 +13,7 @@ function Navbar() {
     return (
         <nav data-testid="navbar-test-id" className="NavbarItems">
             <h1 className="navbar-logo">Stainley Lebron <i className="fab fa-react"/></h1>
-            <div className="menu-icon" onClick={handleClick}>
+            <div data-testid = "click-icon" className="menu-icon" onClick={handleClick}>
                 <i className={click ? 'fas fa-times' : 'fas fa-bars'}/>
             </div>
             <ul className={click ? 'nav-menu active' : 'nav-menu'}>

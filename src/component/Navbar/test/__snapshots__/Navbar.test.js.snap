@@ -15,6 +15,7 @@ exports[`rendering components matches snapshot 1`] = `
   </h1>
   <div
     className="menu-icon"
+    data-testid="click-icon"
     onClick={[Function]}
   >
     <i

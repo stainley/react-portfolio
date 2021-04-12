@@ -2,35 +2,33 @@ import React from "react";
 import ReactDom from 'react-dom';
 
 import Navbar from "../Navbar";
-import {render, cleanup, act, fireEvent, getByTestId} from "@testing-library/react";
+import {render, cleanup, act, fireEvent, findByAltText, findByTestId, getByTestId} from "@testing-library/react";
 import '@testing-library/jest-dom';
 
 import renderer from 'react-test-renderer';
 import {MemoryRouter} from 'react-router-dom';
 
-import App from "../../../App";
-
 afterEach(cleanup);
 
-describe('rendering components', ()=> {
+describe('rendering components', () => {
     it('renders Navbar component without crashing', function () {
 
         const div = document.createElement("div");
         ReactDom.render(
             <MemoryRouter>
-                <Navbar />
+                <Navbar/>
             </MemoryRouter>, div
         );
     });
 
     it('render navbar correctly', () => {
-        const {getByTestId} = render(<MemoryRouter><Navbar /></MemoryRouter>);
+        const {getByTestId} = render(<MemoryRouter><Navbar/></MemoryRouter>);
 
         expect(getByTestId('navbar-test-id')).toHaveTextContent('Stainley Lebron HomeAbout MePortfolioContact MeSign UpSign Up');
     });
 
     it('matches snapshot', () => {
-        const tree = renderer.create(<MemoryRouter><Navbar /></MemoryRouter>).toJSON();
+        const tree = renderer.create(<MemoryRouter><Navbar/></MemoryRouter>).toJSON();
 
         expect(tree).toMatchSnapshot();
     });
@@ -42,7 +40,6 @@ describe('rendering components', ()=> {
         act(() => {
             // Clicked
             fireEvent.click(tree.getByText('About Me'));
-
         });
 
     });
@@ -51,8 +48,17 @@ describe('rendering components', ()=> {
 
 describe('logic', () => {
 
-    it('logic sum two values', () => {
-        expect(1).toEqual(1);
-    })
+    it('click icon navbar', () => {
+        const wrapper = render(<MemoryRouter><Navbar/></MemoryRouter>)
+        const navTestId = wrapper.getByTestId("navbar-test-id")
+
+        const divClickIcon = wrapper.getByTestId('click-icon');
+
+        expect(navTestId.children.item(1).children.item(0).className).toEqual("fas fa-bars");
+        // After click on icon we change to another icon from fa-bars to fa-times
+        divClickIcon.click();
+        expect(navTestId.children.item(1).children.item(0).className).toEqual("fas fa-times");
+
+    });
 
 });
