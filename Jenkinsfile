@@ -11,7 +11,6 @@ pipeline {
         HOME = '.'
         npm_config_cache = 'npm-cache'
     }
-    tools {nodejs "node"}
 
     stages {
         stage('Clone git') {
