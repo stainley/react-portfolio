@@ -48,9 +48,9 @@
     "sonarqube-scanner": "^2.8.0"
   },
   "jestSonar": {
-    "sonar56x": false,
     "reportPath": "testResults",
     "reportFile": "sonar-report.xml",
     "indent": 4
-  }
+  },
+  "sonar": "node sonar-project.js"
 }
