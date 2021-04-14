@@ -15,8 +15,11 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts start --env-file=.env.production",
+    "build": "sh -ac '. .env.${REACT_APP_ENV}; react-scripts build'",
+    "build:staging": "REACT_APP_ENV=staging npm run build",
+    "build:dev": "REACT_APP_ENV=development npm run build",
+    "build:production": "REACT_APP_ENV=production npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -44,12 +47,13 @@
     "@testing-library/user-event": "^12.8.3",
     "enzyme": "^3.11.0",
     "jest": "^26.6.0",
-    "jest-sonar-reporter": "^2.0.0"
+    "jest-sonar-reporter": "^2.0.0",
+    "sonarqube-scanner": "^2.8.0"
   },
   "jestSonar": {
-    "sonar56x": false,
     "reportPath": "testResults",
     "reportFile": "sonar-report.xml",
     "indent": 4
-  }
+  },
+  "sonar": "node sonar-project.js"
 }
