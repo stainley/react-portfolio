@@ -10,6 +10,7 @@ pipeline {
         CI = 'true'
         HOME = '.'
         npm_config_cache = 'npm-cache'
+        CREDENTIALS_ID = getCredentialsId()
     }
 
 
@@ -59,7 +60,8 @@ pipeline {
             when {
                 branch 'master'
             }            
-            steps {                
+            steps {
+                sh 'Creditial ID = $CREDENTIALS_ID'
                 sh 'chmod 777 ./jenkins/scripts/deploy-for-production.sh'
                 sh './jenkins/scripts/deploy-for-production.sh'
                 withCredentials([usernamePassword(credentialsId: 'DockerHub',usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
