@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'node:13.12.0-alpine'
-            args '-p 3000:3000'
+            args '-p 3000:3000 -p 5000:5000'
         }
     }
 
@@ -23,43 +23,38 @@ pipeline {
                 sh 'npm install'
             }
         }
-        stage ('Test and Build') {
-            steps {
-                    script {
-                        if (env.BRANCH_NAME == 'master') {
-                            echo 'This is master'
-                            parallel {
-                                stage('Run Test') {
-                                    steps {
-                                        sh 'npm run test --coverage --watchAll'
-                                    }
-                                }
-                                stage('Create Build') {
-                                    steps {
-                                        sh 'npm run build:production'
-                                    }
-                                }
-                            }
-                        } else if(env.BRANCH_NAME == 'development'){
-                            echo 'This is development'
-                            parallel {
-                                stage('Run Test') {
-                                    steps {
-                                        sh 'npm run test --coverage --watchAll'
-                                    }
-                                }
-                                stage('Create Build') {
-                                    steps {
-                                        sh 'npm run build:dev'
-                                    }
-                                }
-                            }
-                        } else {
-                            echo 'whatever environment'
-                        }
-                    }
+
+        parallel {
+            stage('Unit Test') {
+                steps {
+                    sh './jenkins/scripts/test.sh'
+                }
+            }
+            stage('Integration Test') {
+                steps {
+                    sh './jenkins/scripts/test.sh'
+                }
             }
         }
+
+        stage('Build and Deploy - Production') {
+            when {
+                branch 'master'
+            }
+            steps {
+                sh './jenkins/scripts/deploy-for-production.sh'
+            }
+        }
+
+        stage('Build and Deploy - Development') {
+            when {
+                branch 'development'
+            }
+            steps {
+                sh './jenkins/scripts/deploy-for-qa.sh'
+            }
+        }
+
         /* stage('Production') {
             steps {
                 withAWS(region:'YOUR_BUCKET_REGION',credentials:'CREDENTIALS_FROM_JENKINS_SETUP') {
