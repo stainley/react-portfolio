@@ -50,6 +50,7 @@ pipeline {
                 branch 'master'
             }
             steps {
+                sh 'chmod 777 ./jenkins/scripts/deploy-for-production.sh'
                 sh './jenkins/scripts/deploy-for-production.sh'
             }
         }
@@ -59,6 +60,7 @@ pipeline {
                 branch 'development'
             }
             steps {
+                sh 'chmod 777 ./jenkins/scripts/deploy-for-qa.sh'
                 sh './jenkins/scripts/deploy-for-qa.sh'
             }
         }        
