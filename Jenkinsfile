@@ -24,17 +24,40 @@ pipeline {
             }
         }
         stage ('Test and Build') {
-            parallel {
-                stage('Run Test') {
-                    steps {
-                        sh 'npm run test --coverage --watchAll'
+            steps {
+                    script {
+                        if (env.BRANCH_NAME 'master') {
+                            echo 'This is master'
+                            parallel {
+                                stage('Run Test') {
+                                    steps {
+                                        sh 'npm run test --coverage --watchAll'
+                                    }
+                                }
+                                stage('Create Build') {
+                                    steps {
+                                        sh 'npm run build:production'
+                                    }
+                                }
+                            }
+                        } else if(env.BRANCH_NAME 'development'){
+                            echo 'This is development'
+                            parallel {
+                                stage('Run Test') {
+                                    steps {
+                                        sh 'npm run test --coverage --watchAll'
+                                    }
+                                }
+                                stage('Create Build') {
+                                    steps {
+                                        sh 'npm run build:dev'
+                                    }
+                                }
+                            }
+                        } else {
+                            echo 'whatever environment'
+                        }
                     }
-                }
-                stage('Create Build') {
-                    steps {
-                        sh 'npm run build'
-                    }
-                }
             }
         }
         /* stage('Production') {
