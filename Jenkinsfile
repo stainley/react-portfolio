@@ -10,7 +10,6 @@ pipeline {
         CI = 'true'
         HOME = '.'
         npm_config_cache = 'npm-cache'
-        CREDENTIALS_ID = getCredentialsId()
     }
 
 
@@ -61,10 +60,9 @@ pipeline {
                 branch 'master'
             }            
             steps {
-                sh 'Creditial ID = $CREDENTIALS_ID'
                 sh 'chmod 777 ./jenkins/scripts/deploy-for-production.sh'
                 sh './jenkins/scripts/deploy-for-production.sh'
-                withCredentials([usernamePassword(credentialsId: 'DockerHub',usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker_hub',usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh 'echo username $USERNAME and password $PASSWORD'
                     sh '$PASSWORD | docker login -u stainley --password-stdin'
                     sh 'echo Logging Successful at DOCKER HUB'
