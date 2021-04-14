@@ -10,7 +10,7 @@ pipeline {
         CI = 'true'
         HOME = '.'
         npm_config_cache = 'npm-cache'
-        CREDS_PSW = credentials('docker_hub')
+        DOCKER_HUB_PASSWORD = credentials('docker_hub_password')
     }
 
 
@@ -64,10 +64,10 @@ pipeline {
                 sh 'chmod 777 ./jenkins/scripts/deploy-for-production.sh'
                 sh './jenkins/scripts/deploy-for-production.sh'
                 withCredentials([usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'PWD', usernameVariable: 'USR')]){
-                    sh 'echo $CREDS_PSW|base64'
+                    sh 'echo $DOCKER_HUB_PASSWORD|base64'
                     sh 'echo username $USR | base64'
                     sh 'echo $PWD | base64'
-                    sh 'docker login -u stainley --password $PWD'
+                    sh 'docker login -u stainley --password $DOCKER_HUB_PASSWORD'
                     sh 'echo Logging Successful at DOCKER HUB'
                     sh 'docker push stainley/portfolio-react:0.1.1'
                 }
