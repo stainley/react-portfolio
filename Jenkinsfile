@@ -46,7 +46,7 @@ pipeline {
             }
         }
 
-        stage('Build and Deploy - Development') {
+        stage('Build and Deploy - QA') {
             when {
                 branch 'development'
             }
