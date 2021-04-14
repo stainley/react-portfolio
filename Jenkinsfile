@@ -64,10 +64,10 @@ pipeline {
                 sh 'chmod 777 ./jenkins/scripts/deploy-for-production.sh'
                 sh './jenkins/scripts/deploy-for-production.sh'
                 withCredentials([usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'PWD', usernameVariable: 'USR')]){
-                    sh 'echo $CREDENTIALS_ID'
+                    sh 'echo $CREDENTIALS_ID|base64'
                     sh 'echo username $USR | base64'
                     sh 'echo $PWD | base64'
-                    sh 'docker login -u stainley --password PWD'
+                    sh 'docker login -u stainley --password $PWD'
                     sh 'echo Logging Successful at DOCKER HUB'
                     sh 'docker push stainley/portfolio-react:0.1.1'
                 }
