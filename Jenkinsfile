@@ -26,7 +26,7 @@ pipeline {
         stage ('Test and Build') {
             steps {
                     script {
-                        if (env.BRANCH_NAME 'master') {
+                        if (env.BRANCH_NAME == 'master') {
                             echo 'This is master'
                             parallel {
                                 stage('Run Test') {
@@ -40,7 +40,7 @@ pipeline {
                                     }
                                 }
                             }
-                        } else if(env.BRANCH_NAME 'development'){
+                        } else if(env.BRANCH_NAME == 'development'){
                             echo 'This is development'
                             parallel {
                                 stage('Run Test') {
