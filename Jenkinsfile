@@ -28,11 +28,16 @@ pipeline {
             parallel {
                 stage('Unit Test') {
                     steps {
+                        sh 'echo grand permission'
+                        sh 'chmod 777 ./jenkins/scripts/test.sh'
+                        sh 'echo  Permission granted'
                         sh './jenkins/scripts/test.sh'
                     }
                 }
                 stage('Integration Test') {
+
                     steps {
+                        sh 'chmod 777 ./jenkins/scripts/test.sh'
                         sh './jenkins/scripts/test.sh'
                     }
                 }
