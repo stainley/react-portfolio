@@ -1,8 +1,10 @@
 #!/usr/bin/env sh
+PORTFOLIO_VERSION=0.1.1
 echo 'Building Docker Image'
 docker  build -t portfolio-prod -f Dockerfile.dev .
-docker tag portfolio-prod stainley/img-portfolio:0.1.0
-docker push portfolio-prod stainley/img-portfolio:0.1.0
+echo 'building a tag'
+docker tag portfolio-prod stainley/portfolio-react:$PORTFOLIO_VERSION
+#docker push portfolio-prod stainley/img-portfolio:0.1.0
 
 
 echo 'The following "npm" command builds your Node.js/React application for'
