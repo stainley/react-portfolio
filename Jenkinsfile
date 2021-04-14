@@ -10,6 +10,7 @@ pipeline {
         CI = 'true'
         HOME = '.'
         npm_config_cache = 'npm-cache'
+        CREDENTIALS_ID = credentials('docker_hub')
     }
 
 
@@ -63,6 +64,7 @@ pipeline {
                 sh 'chmod 777 ./jenkins/scripts/deploy-for-production.sh'
                 sh './jenkins/scripts/deploy-for-production.sh'
                 withCredentials([usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'PWD', usernameVariable: 'USR')]){
+                    sh 'echo $CREDENTIALS_ID'
                     sh 'echo username $USR | base64'
                     sh 'echo $PWD | base64'
                     sh 'docker login -u stainley --password PWD'
