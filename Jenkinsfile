@@ -54,7 +54,8 @@ pipeline {
                 sh 'chmod 777 ./jenkins/scripts/deploy-for-production.sh'
                 sh './jenkins/scripts/deploy-for-production.sh'
                 withCredentials([usernamePassword(credentialsId: 'DockerHub',usernameVariable: 'username', passwordVariable: 'password')]) {
-                    sh 'docker login -u $username --password-stdin $password'
+                    sh 'echo $username and $password'
+                    sh 'docker login -u stainley --password-stdin C1c12000*
                     sh 'docker push stainley/portfolio-react:0.1.1'
                 }
             }
