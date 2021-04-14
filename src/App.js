@@ -4,37 +4,48 @@ import Navbar from "./component/Navbar/Navbar";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import About from "./component/about/About";
 import Portfolio from "./component/portfolio/Portfolio";
+import {Component} from "react";
 
-function App() {
+class App extends Component {
 
-    const personalInformation = {
-        "headline": "Title",
-        "description": "Description to be complete"
-    };
+    componentDidMount() {
+        fetch(process.env.REACT_APP_API_URL)
+            .then(response => response.json())
+            .then(users => this.setState({ users }));
+    }
 
+    render() {
 
+        const personalInformation = {
+            "headline": "Title",
+            "description": "Description to be complete"
+        };
 
-    return (
-        <div className="App">
-            <Router>
-                <Navbar />
-                <Switch>
-                    <Route path="/home">
-                        <Home/>
-                    </Route>
-                    <Route path="/about">
-                        <About
-                            description={personalInformation.description}
-                            headline={personalInformation.headline}
+        const envValue = process.env.REACT_APP_ENV;
+        console.log(envValue);
+
+        return (
+            <div className="App">
+                <Router>
+                    <Navbar />
+                    <Switch>
+                        <Route path="/home">
+                            <Home/>
+                        </Route>
+                        <Route path="/about">
+                            <About
+                                description={personalInformation.description}
+                                headline={personalInformation.headline}
                             />
-                    </Route>
-                    <Route path="/portfolio">
-                        <Portfolio/>
-                    </Route>
-                </Switch>
-            </Router>
-        </div>
-    );
+                        </Route>
+                        <Route path="/portfolio">
+                            <Portfolio environment={envValue} />
+                        </Route>
+                    </Switch>
+                </Router>
+            </div>
+        );
+    }
 }
 
 export default App;
