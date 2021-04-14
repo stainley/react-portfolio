@@ -44,21 +44,6 @@ pipeline {
                 }
             }
         }
-        
-
-        stage('Build and Deploy - Production') {
-            when {
-                branch 'master'
-            }            
-            steps {                
-                sh 'chmod 777 ./jenkins/scripts/deploy-for-production.sh'
-                sh './jenkins/scripts/deploy-for-production.sh'
-                withCredentials([usernamePassword(credentialsId: 'DockerHub',usernameVariable: 'username', passwordVariable: 'password')]) {
-                    sh 'docker login -u stainley --password C1c12000*'
-                    sh 'docker push stainley/portfolio-react:0.1.1'
-                }
-            }
-        }
 
         stage('Build and Deploy - QA') {
             when {
@@ -68,6 +53,21 @@ pipeline {
                 sh 'chmod 777 ./jenkins/scripts/deploy-for-qa.sh'
                 sh './jenkins/scripts/deploy-for-qa.sh'
             }
-        }        
+        }
+
+        stage('Build and Deploy - Production') {
+            when {
+                branch 'master'
+            }            
+            steps {                
+                sh 'chmod 777 ./jenkins/scripts/deploy-for-production.sh'
+                sh './jenkins/scripts/deploy-for-production.sh'
+                withCredentials([usernamePassword(credentialsId: 'DockerHub',usernameVariable: 'username', passwordVariable: 'password')]) {
+                    sh 'docker login -u stainley --password password'
+                    sh 'docker push stainley/portfolio-react:0.1.1'
+                }
+            }
+        }
+
     }
 }
