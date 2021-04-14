@@ -12,7 +12,6 @@ pipeline {
         npm_config_cache = 'npm-cache'
     }
 
-    DOCKER_TAG = getDockerTag()
 
     stages {
         stage('Clone git') {
@@ -55,7 +54,6 @@ pipeline {
                 sh 'chmod 777 ./jenkins/scripts/deploy-for-production.sh'
                 sh './jenkins/scripts/deploy-for-production.sh'
                 withCredentials([usernamePassword(credentialsId: 'docker-hub', variable: 'password')]) {
-                    sh 'echo DOCKER_TAG=${DOCKER_TAG}'
                     sh 'docker login -u stainley -p ${password}'
                     sh 'docker push stainley/portfolio-react:0.1.1'
                 }
