@@ -22,7 +22,6 @@ class App extends Component {
         };
 
         const envValue = process.env.REACT_APP_ENV;
-        console.log(envValue);
 
         return (
             <div className="App">
