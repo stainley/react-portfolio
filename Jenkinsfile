@@ -20,11 +20,11 @@ pipeline {
                 git 'https://github.com/stainley/react-portfolio.git'
             }
         }
-        /* stage('Install Packages') {
+        stage('Install Packages') {
             steps {
                 sh 'npm install'
             }
-        } */
+        }
 
         stage('Test'){
             parallel {
@@ -61,8 +61,8 @@ pipeline {
                 branch 'master'
             }            
             steps {
-                //sh 'chmod 777 ./jenkins/scripts/deploy-for-production.sh'
-                //sh './jenkins/scripts/deploy-for-production.sh'
+                sh 'chmod 777 ./jenkins/scripts/deploy-for-production.sh'
+                sh './jenkins/scripts/deploy-for-production.sh'
                 withCredentials([usernamePassword(credentialsId: 'docker_hub', passwordVariable: 'PWD', usernameVariable: 'USR')]){
                     sh 'docker login -u $USR --password $DOCKER_HUB_PASSWORD'
                     sh 'docker push stainley/portfolio-react:0.1.1'
