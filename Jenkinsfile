@@ -20,11 +20,11 @@ pipeline {
                 git 'https://github.com/stainley/react-portfolio.git'
             }
         }
-        stage('Install Packages') {
+        /* stage('Install Packages') {
             steps {
-                //sh 'npm install'
+                sh 'npm install'
             }
-        }
+        } */
 
         stage('Test'){
             parallel {
