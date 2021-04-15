@@ -50,11 +50,11 @@ pipeline {
         }
 
          stage('Quality Code') {
+                agent {     docker   'maven:3-alpine'   }
                 environment {
                     scannerHome = tool 'SonarQube Scanner'
                 }
             steps {
-                sh 'export PATH="$PATH:$JAVA_HOME/bin"'
                 withSonarQubeEnv('Sonarqube') {
                     sh '${scannerHome}/bin/sonar-scanner'
                 }
