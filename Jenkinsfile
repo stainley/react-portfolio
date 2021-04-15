@@ -66,7 +66,7 @@ pipeline {
             }
             steps {
                 withSonarQubeEnv('Sonarqube') {
-                    sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
+                    sh '${scannerHome}/bin/sonar-scanner -Dsonar.scanner.dumpToFile=dump-data.txt'
                 }
                 timeout(time: 15, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
