@@ -50,13 +50,15 @@ pipeline {
         }
 
          stage('Quality Code') {
-                agent {     docker   'maven:3-alpine'   }
+
                 environment {
                     scannerHome = tool 'SonarQube Scanner'
                 }
             steps {
                 withSonarQubeEnv('Sonarqube') {
-                    sh '${scannerHome}/bin/sonar-scanner'
+                    withJdk('JAVA_HOME') {
+                        sh '${scannerHome}/bin/sonar-scanner'
+                    }
                 }
                 timeout(time: 15, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
