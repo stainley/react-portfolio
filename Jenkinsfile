@@ -50,7 +50,15 @@ pipeline {
                 }
             steps {
                 withSonarQubeEnv('Sonarqube') {
-                    sh './gradlew sonarqube'
+                    sh '''
+                                    ${scannerHome}/bin/sonar-scanner \
+                                    -D sonar.projectKey=Portfolio \
+                                    -D sonar.projectName=Portfolio-React \
+                                    -D sonar.projectVersion=0.1.1 \
+                                    -D sonar.languages=js,ts \  // DEPRECATED, do not use this option
+                                    -D sonar.sources=./src \
+                                    -D sonar.exclusions=node_modules/**, build/**
+                                    '''
                 }
                 timeout(time: 15, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
