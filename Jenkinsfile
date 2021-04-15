@@ -7,6 +7,10 @@ pipeline {
         }
     } */
 
+    tools {
+        nodejs 'nodejs'
+    }
+
     environment {
         CI = 'true'
         HOME = '.'
@@ -23,10 +27,6 @@ pipeline {
         }
 
         stage('Validate NodeJS') {
-            tools {
-                nodejs 'nodejs'
-            }
-
             steps {
                 nodejs('nodejs') {
                     sh 'node -v'
@@ -36,7 +36,9 @@ pipeline {
 
         stage('Install Packages') {
             steps {
-                sh 'npm install'
+                nodejs('nodejs') {
+                    sh 'npm install'
+                }
             }
         }
 
