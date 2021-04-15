@@ -36,7 +36,6 @@ pipeline {
                     }
                 }
                 stage('Coverage') {
-
                     steps {
                         sh 'npm run test -- --coverage'
                         cobertura(autoUpdateHealth: true, autoUpdateStability: true, coberturaReportFile: '**/coverage/clover.xml',
@@ -49,7 +48,7 @@ pipeline {
         stage('Quality Code') {
             withSonarQubeEnv('sonar') {
                 def scannerHome = tool 'sonarqube-scanner'
-                sh '${scannerHome}'/bin/sonar-scanner
+                sh '${scannerHome}/bin/sonar-scanner'
             }
         }
 
