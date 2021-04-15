@@ -1,1 +1,1 @@
-npm run test --coverage --watchAll
+npm test -- --coverage
