@@ -25,15 +25,6 @@ pipeline {
             }
         }
 
-        stage('Check Tools') {
-            environment {
-                scannerHome = tool 'SonarQube Scanner'
-            }
-            steps {
-                sh 'export JAVA_HOME=$JAVA_HOME'
-            }
-        }
-
         stage('Install Packages') {
             steps {
                 sh 'npm install'
