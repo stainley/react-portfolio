@@ -7,7 +7,7 @@ pipeline {
     }
 
     tools {
-        jdk 'JDK11'
+        jdk 'JAVA_HOME'
     }
     
     environment {
