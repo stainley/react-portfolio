@@ -26,14 +26,6 @@ pipeline {
             }
         }
 
-        stage('Validate NodeJS') {
-            steps {
-                nodejs('nodejs') {
-                    sh 'node -v'
-                }
-            }
-        }
-
         stage('Install Packages') {
             steps {
                 nodejs('nodejs') {
