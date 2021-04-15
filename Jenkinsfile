@@ -1,10 +1,11 @@
 pipeline {
-    agent {
+    agent any
+    /* agent {
         docker {
             image 'node:13.12.0-alpine'
             args '-p 3000:3000'
         }
-    }
+    } */
 
     environment {
         CI = 'true'
@@ -53,13 +54,8 @@ pipeline {
                     scannerHome = tool 'SonarQube Scanner'
                 }
             steps {
-                withMaven(maven: 'Default',jdk: 'JAVA_HOME') {
-                    sh "echo JAVA_HOME=$JAVA_HOME"
-                    sh "mvn clean"
-
-                    withSonarQubeEnv('Sonarqube') {
-                        sh '${scannerHome}/bin/sonar-scanner'
-                    }
+                withSonarQubeEnv('Sonarqube') {
+                    sh '${scannerHome}/bin/sonar-scanner'
                 }
 
                 timeout(time: 15, unit: 'MINUTES') {
