@@ -38,8 +38,7 @@ pipeline {
                 stage('Coverage') {
                     steps {
                         sh 'npm run test -- --coverage'
-                        cobertura(autoUpdateHealth: true, autoUpdateStability: true, coberturaReportFile: '**/coverage/clover.xml',
-                        failNoReports: true, classCoverageTargets: '70', lineCoverageTargets: '80', fileCoverageTargets: '90', sourceEncoding: 'ASCII', conditionalCoverageTargets: '70')
+                        cobertura(autoUpdateHealth: true, autoUpdateStability: true, coberturaReportFile: '**/coverage/clover.xml', failNoReports: true, classCoverageTargets: '70', lineCoverageTargets: '80', fileCoverageTargets: '90', sourceEncoding: 'ASCII', conditionalCoverageTargets: '70')
                     }
                 }
             }
