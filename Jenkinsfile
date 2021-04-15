@@ -5,6 +5,10 @@ pipeline {
             args '-p 3000:3000'
         }
     }
+
+    tools {
+        jdk 'JDK11'
+    }
     
     environment {
         CI = 'true'
