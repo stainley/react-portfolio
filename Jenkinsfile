@@ -1,11 +1,16 @@
 pipeline {
-    agent {
+    agent any
+    /* agent {
         docker {
             image 'node:13.12.0-alpine'
             args '-p 3000:3000'
         }
+    } */
+
+    tools {
+        nodejs 'nodejs'
     }
-    
+
     environment {
         CI = 'true'
         HOME = '.'
@@ -20,9 +25,12 @@ pipeline {
                 git 'https://github.com/stainley/react-portfolio.git'
             }
         }
+
         stage('Install Packages') {
             steps {
-                sh 'npm install'
+                nodejs('nodejs') {
+                    sh 'npm install'
+                }
             }
         }
 
@@ -30,21 +38,77 @@ pipeline {
             parallel {
                 stage('Unit Test') {
                     steps {
-                        sh 'echo grand permission'
-                        sh 'chmod 777 ./jenkins/scripts/test.sh'
-                        sh 'echo  Permission granted'
-                        sh './jenkins/scripts/test.sh'
+                        nodejs('nodejs') {
+                            sh 'chmod 777 ./jenkins/scripts/test.sh'
+                            sh './jenkins/scripts/test.sh'
+                        }
                     }
                 }
-                stage('Integration Test') {
 
-                    steps {
-                        sh 'chmod 777 ./jenkins/scripts/test.sh'
-                        sh './jenkins/scripts/test.sh'
-                    }
+            /* steps {
+                sh 'npm run test --coverage'
+                cobertura(autoUpdateHealth: true, autoUpdateStability: true, coberturaReportFile: '**//*  *//*  *//*  *//* coverage/clover.xml', failNoReports: true, classCoverageTargets: '70', lineCoverageTargets: '80', fileCoverageTargets: '90', sourceEncoding: 'ASCII', conditionalCoverageTargets: '70')
+            } */
+            }
+        }
+
+        stage('Quality Code') {
+            environment {
+                scannerHome = tool 'SonarQube Scanner'
+            }
+            steps {
+                withSonarQubeEnv('Sonarqube') {
+                    sh '${scannerHome}/bin/sonar-scanner'
+                }
+                timeout(time: 15, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
+
+        /* stage('Test'){
+
+            parallel {
+                stage('Unit Test') {
+                    steps {
+                        sh 'chmod 777 ./jenkins/scripts/test.sh'
+                        sh './jenkins/scripts/test.sh'
+                        //junit 'coverage/junit.xml'
+                    }
+                }
+                 *//* stage('Coverage') {
+                    steps {
+                        sh 'npm run test --coverage'
+                        cobertura(autoUpdateHealth: true, autoUpdateStability: true, coberturaReportFile: '**//*  *//* coverage/clover.xml', failNoReports: true, classCoverageTargets: '70', lineCoverageTargets: '80', fileCoverageTargets: '90', sourceEncoding: 'ASCII', conditionalCoverageTargets: '70')
+                    }
+                } *//*
+            }
+        }
+
+         stage('Quality Code') {
+                environment {
+                    scannerHome = tool 'SonarQube Scanner'
+                }
+            steps {
+                withSonarQubeEnv('Sonarqube') {
+                    sh '${scannerHome}/bin/sonar-scanner'
+                }
+
+                timeout(time: 15, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
+ *//*         stage('Quality Gate') {
+            steps {
+                timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
+                def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+                if (qg.status != 'OK') {
+                    error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                }
+            }
+        } *//*
 
         stage('Build and Deploy - QA') {
             when {
@@ -68,6 +132,6 @@ pipeline {
                     sh 'docker push stainley/portfolio-react:0.1.1'
                 }
             }
-        }
+        } */
     }
 }
