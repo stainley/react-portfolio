@@ -45,9 +45,11 @@ pipeline {
         }
 
          stage('Quality Code') {
-            withSonarQubeEnv('Sonarqube') {
-                def scannerHome = tool 'sonarqube-scanner'
-                sh '${scannerHome}/bin/sonar-scanner'
+            steps {
+                withSonarQubeEnv('Sonarqube') {
+                    def scannerHome = tool 'sonarqube-scanner'
+                    sh '${scannerHome}/bin/sonar-scanner'
+                }
             }
         }
 
