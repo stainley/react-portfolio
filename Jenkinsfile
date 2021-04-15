@@ -56,7 +56,7 @@ pipeline {
                 }
             steps {
                 withSonarQubeEnv('Sonarqube') {
-                    withJdk('JAVA_HOME') {
+                    withEnv('JAVA_HOME') {
                         sh '${scannerHome}/bin/sonar-scanner'
                     }
                 }
