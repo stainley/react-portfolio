@@ -1,16 +1,11 @@
 pipeline {
-       agent any
-    /* agent {
+    agent {
         docker {
             image 'node:13.12.0-alpine'
             args '-p 3000:3000'
         }
-    } */
-
-    tools {
-        jdk 'JAVA_HOME'
     }
-    
+
     environment {
         CI = 'true'
         HOME = '.'
@@ -27,12 +22,6 @@ pipeline {
         }
 
         stage('Install Packages') {
-            agent {
-                    docker {
-                        image 'node:13.12.0-alpine'
-                        args '-p 3000:3000'
-                    }
-            }
             steps {
                 sh 'echo Installing'
                 //sh 'npm install'
@@ -43,12 +32,6 @@ pipeline {
 
             parallel {
                 stage('Unit Test') {
-                    agent {
-                        docker {
-                            image 'node:13.12.0-alpine'
-                            args '-p 3000:3000'
-                        }
-                    }
                     steps {
                         sh 'npm install'
                         sh 'chmod 777 ./jenkins/scripts/test.sh'
@@ -66,15 +49,19 @@ pipeline {
         }
 
          stage('Quality Code') {
-                agent { docker { image 'openjdk:8u111-jdk-alpine'} }
                 environment {
                     scannerHome = tool 'SonarQube Scanner'
                 }
             steps {
-                withSonarQubeEnv('Sonarqube') {
-                        sh '${scannerHome}/bin/sonar-scanner'
+                withMaven(maven: 'Default',jdk: 'JAVA_HOME') {
+                    sh "echo JAVA_HOME=$JAVA_HOME"
+                    sh "mvn clean"
 
+                    withSonarQubeEnv('Sonarqube') {
+                        sh '${scannerHome}/bin/sonar-scanner'
+                    }
                 }
+
                 timeout(time: 15, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
