@@ -42,13 +42,31 @@ pipeline {
             }
         }
 
+        stage('Test'){
+            parallel {
+                stage('Unit Test') {
+                    steps {
+                        nodejs('nodejs') {
+                            sh 'chmod 777 ./jenkins/scripts/test.sh'
+                            sh './jenkins/scripts/test.sh'
+                        }
+                    }
+                }
+
+            /* steps {
+                sh 'npm run test --coverage'
+                cobertura(autoUpdateHealth: true, autoUpdateStability: true, coberturaReportFile: '**//*  *//*  *//*  *//* coverage/clover.xml', failNoReports: true, classCoverageTargets: '70', lineCoverageTargets: '80', fileCoverageTargets: '90', sourceEncoding: 'ASCII', conditionalCoverageTargets: '70')
+            } */
+            }
+        }
+
         stage('Quality Code') {
             environment {
                 scannerHome = tool 'SonarQube Scanner'
             }
             steps {
                 withSonarQubeEnv('Sonarqube') {
-                    sh '${scannerHome}/bin/sonar-scanner'
+                    sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
                 }
                 timeout(time: 15, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
