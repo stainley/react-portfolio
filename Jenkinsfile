@@ -30,9 +30,7 @@ pipeline {
                 scannerHome = tool 'SonarQube Scanner'
             }
             steps {
-                sh 'echo $JAVA_HOME'
-                sh 'echo $scannerHome'
-                sh 'export JAVA_HOME=$JAVA_HOME/bin/'
+                sh 'export JAVA_HOME=$JAVA_HOME'
             }
         }
 
