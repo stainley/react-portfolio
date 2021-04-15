@@ -24,6 +24,16 @@ pipeline {
                 git 'https://github.com/stainley/react-portfolio.git'
             }
         }
+
+        stage('Check Tools') {
+            steps {
+                sh 'echo JAVA_HOME'
+                scannerHome = tool 'SonarQube Scanner'
+                sh 'echo scannerHome'
+                sh 'export JAVA_HOME=%JAVA_HOME/bin/'
+            }
+        }
+
         stage('Install Packages') {
             steps {
                 sh 'npm install'
