@@ -32,12 +32,12 @@ pipeline {
                     steps {
                         sh 'chmod 777 ./jenkins/scripts/test.sh'
                         sh './jenkins/scripts/test.sh'
-                        junit 'coverage/junit.xml'
+                        //junit 'coverage/junit.xml'
                     }
                 }
                 stage('Coverage') {
                     steps {
-                        sh 'npm run test -- --coverage'
+                        sh 'npm run test --coverage'
                         cobertura(autoUpdateHealth: true, autoUpdateStability: true, coberturaReportFile: '**/coverage/clover.xml', failNoReports: true, classCoverageTargets: '70', lineCoverageTargets: '80', fileCoverageTargets: '90', sourceEncoding: 'ASCII', conditionalCoverageTargets: '70')
                     }
                 }
