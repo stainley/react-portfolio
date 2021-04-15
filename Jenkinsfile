@@ -26,9 +26,11 @@ pipeline {
         }
 
         stage('Check Tools') {
+            environment {
+                scannerHome = tool 'SonarQube Scanner'
+            }
             steps {
                 sh 'echo JAVA_HOME'
-                scannerHome = tool 'SonarQube Scanner'
                 sh 'echo scannerHome'
                 sh 'export JAVA_HOME=%JAVA_HOME/bin/'
             }
