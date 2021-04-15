@@ -45,10 +45,15 @@ pipeline {
         }
 
          stage('Quality Code') {
+                environment {
+                    scannerHome = tool 'SonarQube Scanner'
+                }
             steps {
                 withSonarQubeEnv('Sonarqube') {
-                    def scannerHome = tool 'sonarqube-scanner'
-                    sh '${scannerHome}/bin/sonar-scanner'
+                    sh './gradlew jacocoTestReport sonarqube'
+                }
+                timeout(time: 15, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
