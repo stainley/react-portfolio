@@ -22,30 +22,40 @@ pipeline {
             }
         }
 
-        stage('Install Packages') {
+        stage('Validate NodeJS') {
+            tools {
+                nodejs 'nodejs'
+            }
+
             steps {
-                sh 'echo Installing'
-                //sh 'npm install'
+                nodejs('nodejs') {
+                    sh 'node -v'
+                }
             }
         }
 
-        stage('Test'){
+        stage('Install Packages') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        /* stage('Test'){
 
             parallel {
                 stage('Unit Test') {
                     steps {
-                        sh 'npm install'
                         sh 'chmod 777 ./jenkins/scripts/test.sh'
                         sh './jenkins/scripts/test.sh'
                         //junit 'coverage/junit.xml'
                     }
                 }
-                /* stage('Coverage') {
+                 *//* stage('Coverage') {
                     steps {
                         sh 'npm run test --coverage'
-                        cobertura(autoUpdateHealth: true, autoUpdateStability: true, coberturaReportFile: '**//* coverage/clover.xml', failNoReports: true, classCoverageTargets: '70', lineCoverageTargets: '80', fileCoverageTargets: '90', sourceEncoding: 'ASCII', conditionalCoverageTargets: '70')
+                        cobertura(autoUpdateHealth: true, autoUpdateStability: true, coberturaReportFile: '**//*  *//* coverage/clover.xml', failNoReports: true, classCoverageTargets: '70', lineCoverageTargets: '80', fileCoverageTargets: '90', sourceEncoding: 'ASCII', conditionalCoverageTargets: '70')
                     }
-                } */
+                } *//*
             }
         }
 
@@ -64,7 +74,7 @@ pipeline {
             }
         }
 
-/*         stage('Quality Gate') {
+ *//*         stage('Quality Gate') {
             steps {
                 timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
                 def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
@@ -72,7 +82,7 @@ pipeline {
                     error "Pipeline aborted due to quality gate failure: ${qg.status}"
                 }
             }
-        } */
+        } *//*
 
         stage('Build and Deploy - QA') {
             when {
@@ -96,6 +106,6 @@ pipeline {
                     sh 'docker push stainley/portfolio-react:0.1.1'
                 }
             }
-        }
+        } */
     }
 }
