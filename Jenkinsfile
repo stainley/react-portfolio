@@ -30,19 +30,34 @@ pipeline {
             parallel {
                 stage('Unit Test') {
                     steps {
-                        sh 'echo grand permission'
                         sh 'chmod 777 ./jenkins/scripts/test.sh'
-                        sh 'echo  Permission granted'
                         sh './jenkins/scripts/test.sh'
+                        junit 'coverage/junit.xml'
                     }
                 }
-                stage('Integration Test') {
+                stage('Coverage') {
 
                     steps {
-                        sh 'chmod 777 ./jenkins/scripts/test.sh'
-                        sh './jenkins/scripts/test.sh'
+                        sh 'npm run test -- --coverage'
+                        cobertura(autoUpdateHealth: true, autoUpdateStability: true, coberturaReportFile: '**/coverage/cobertura-coverage.xml',
+                        failNoReports: true, classCoverageTargets: '70', lineCoverageTargets: '80', fileCoverageTargets: '90', sourceEncoding: 'ASCII', conditionalCoverageTargets: '70')
                     }
                 }
+            }
+        }
+
+        stage('Quality Code') {
+            withSonarQubeEnv('sonar') {
+                def scannerHome = tool 'sonarqube-scanner'
+                sh '${scannerHome}'/bin/sonar-scanner
+            }
+        }
+
+        stage('Quality Gate') {
+            timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
+                def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+                if (qg.status != 'OK') {
+                    error "Pipeline aborted due to quality gate failure: ${qg.status}"
             }
         }
 
