@@ -39,14 +39,15 @@ pipeline {
         }
 
         stage('Test'){
-            agent {
-                    docker {
-                        image 'node:13.12.0-alpine'
-                        args '-p 3000:3000'
-                    }
-            }
+
             parallel {
                 stage('Unit Test') {
+                    agent {
+                        docker {
+                            image 'node:13.12.0-alpine'
+                            args '-p 3000:3000'
+                        }
+                    }
                     steps {
                         sh 'chmod 777 ./jenkins/scripts/test.sh'
                         sh './jenkins/scripts/test.sh'
