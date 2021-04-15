@@ -34,7 +34,8 @@ pipeline {
                     }
             }
             steps {
-                sh 'npm install'
+                sh 'echo Installing'
+                //sh 'npm install'
             }
         }
 
@@ -49,6 +50,7 @@ pipeline {
                         }
                     }
                     steps {
+                        sh 'npm install'
                         sh 'chmod 777 ./jenkins/scripts/test.sh'
                         sh './jenkins/scripts/test.sh'
                         //junit 'coverage/junit.xml'
