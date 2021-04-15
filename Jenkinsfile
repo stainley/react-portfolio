@@ -1,10 +1,11 @@
 pipeline {
-    agent {
+       agent any
+    /* agent {
         docker {
             image 'node:13.12.0-alpine'
             args '-p 3000:3000'
         }
-    }
+    } */
 
     tools {
         jdk 'JAVA_HOME'
@@ -50,15 +51,14 @@ pipeline {
         }
 
          stage('Quality Code') {
-
+                agent { docker { image 'openjdk:8u111-jdk-alpine'} }
                 environment {
                     scannerHome = tool 'SonarQube Scanner'
                 }
             steps {
                 withSonarQubeEnv('Sonarqube') {
-                    withEnv('JAVA_HOME') {
                         sh '${scannerHome}/bin/sonar-scanner'
-                    }
+
                 }
                 timeout(time: 15, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
