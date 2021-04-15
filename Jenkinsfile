@@ -42,6 +42,20 @@ pipeline {
             }
         }
 
+        stage('Quality Code') {
+            environment {
+                scannerHome = tool 'SonarQube Scanner'
+            }
+            steps {
+                withSonarQubeEnv('Sonarqube') {
+                    sh '${scannerHome}/bin/sonar-scanner'
+                }
+                timeout(time: 15, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
         /* stage('Test'){
 
             parallel {
