@@ -30,7 +30,7 @@ pipeline {
             steps {
                 nodejs('nodejs') {
                     sh 'npm install -g yarn'
-                    sh "yarn install"
+                    sh "yarn install --no-audit"
                 }
             }
         }
