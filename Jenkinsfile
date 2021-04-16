@@ -30,7 +30,7 @@ pipeline {
             steps {
                 nodejs('nodejs') {
                     sh 'npm install -g yarn'
-                    sh "yarn install --no-audit"
+                    sh "yarn install"
                 }
             }
         }
@@ -48,7 +48,7 @@ pipeline {
 
                 stage('Test Coverage'){
                     steps {
-                        sh 'yarn test jest -- --coverage'
+                        sh 'yarn run test jest -- --coverage'
                         cobertura(autoUpdateHealth: true, autoUpdateStability: true, coberturaReportFile: '**/coverage/lcov.info', failNoReports: true, classCoverageTargets: '70', lineCoverageTargets: '80', fileCoverageTargets: '90', sourceEncoding: 'ASCII', conditionalCoverageTargets: '70')
                     }
                 }
