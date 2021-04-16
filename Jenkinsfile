@@ -29,7 +29,6 @@ pipeline {
         stage('Install Packages') {
             steps {
                 nodejs('nodejs') {
-
                     sh 'npm install -g yarn'
                     sh "yarn install"
                 }
