@@ -29,7 +29,8 @@ pipeline {
         stage('Install Packages') {
             steps {
                 nodejs('nodejs') {
-                    sh 'npm install'
+                    sh 'npm install -g yarn'
+                    sh "yarn install"
                 }
             }
         }
@@ -45,10 +46,12 @@ pipeline {
                     }
                 }
 
-            /* steps {
-                sh 'npm run test --coverage'
-                cobertura(autoUpdateHealth: true, autoUpdateStability: true, coberturaReportFile: '**//*  *//*  *//*  *//* coverage/clover.xml', failNoReports: true, classCoverageTargets: '70', lineCoverageTargets: '80', fileCoverageTargets: '90', sourceEncoding: 'ASCII', conditionalCoverageTargets: '70')
-            } */
+                stage('Test Coverage'){
+                    steps {
+                        sh 'yarn run test jest -- --coverage'
+                        cobertura(autoUpdateHealth: true, autoUpdateStability: true, coberturaReportFile: '**/coverage/lcov.info', failNoReports: true, classCoverageTargets: '70', lineCoverageTargets: '80', fileCoverageTargets: '90', sourceEncoding: 'ASCII', conditionalCoverageTargets: '70')
+                    }
+                }
             }
         }
 
@@ -60,7 +63,7 @@ pipeline {
                 withSonarQubeEnv('Sonarqube') {
                     sh '${scannerHome}/bin/sonar-scanner'
                 }
-                timeout(time: 15, unit: 'MINUTES') {
+                timeout(time: 5, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }

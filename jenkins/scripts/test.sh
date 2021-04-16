@@ -1,1 +1,1 @@
-npm run test --coverage --watchAll
+yarn run test
