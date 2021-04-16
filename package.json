@@ -40,7 +40,8 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
-    "@testing-library/user-event": "^12.8.3"
+    "@testing-library/user-event": "^12.8.3",
+    "jest": "^26.6.3"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -59,7 +60,7 @@
         "statements": 80
       }
     },
-    "coveragePathIgnorePatterns" : [
+    "coveragePathIgnorePatterns": [
       "!<rootDir>/node_modules/"
     ],
     "coverageReporters": [
